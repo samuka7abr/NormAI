@@ -1,0 +1,146 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: normalizador-jusbrasil-api
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src:/app/src
+      - ./tests:/app/tests
+      - ./migrations:/app/migrations
+      - ./alembic.ini:/app/alembic.ini
+    depends_on:
+      db:
+        condition: service_healthy
+      localstack:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: uv run --no-dev uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: normalizador-jusbrasil-worker
+    env_file:
+      - .env
+    environment:
+      CELERY_WORKER: "1"
+    volumes:
+      - ./src:/app/src
+      - ./tests:/app/tests
+      - ./migrations:/app/migrations
+      - ./alembic.ini:/app/alembic.ini
+    depends_on:
+      db:
+        condition: service_healthy
+      localstack:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      # Ollama é dependência soft: o worker funciona sem ele (cai pra "Outros"),
+      # mas em dev sempre queremos subir junto pra ter classificação real.
+      ollama:
+        condition: service_healthy
+    command: uv run --no-dev celery -A infrastructure.worker.celery_app.celery_app worker --loglevel=info --concurrency=1
+
+  redis:
+    image: redis:7-alpine
+    container_name: normalizador-jusbrasil-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  db:
+    image: postgres:16-alpine
+    container_name: normalizador-jusbrasil-db
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  localstack:
+    image: localstack/localstack:3
+    container_name: normalizador-jusbrasil-localstack
+    ports:
+      - "4566:4566"
+    environment:
+      SERVICES: s3
+      DEBUG: "0"
+      AWS_DEFAULT_REGION: ${AWS_S3_REGION:-us-east-1}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-test}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-test}
+      AWS_S3_BUCKET_NAME: ${AWS_S3_BUCKET_NAME:-normalizador-local}
+    volumes:
+      - localstack-data:/var/lib/localstack
+      - ./scripts/localstack/init-s3.sh:/etc/localstack/init/ready.d/init-s3.sh:ro
+    healthcheck:
+      test: ["CMD", "awslocal", "s3", "ls"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  # Servidor Ollama para inferência local do Llama (apenas dev).
+  # Em staging/prod, ajustar LLM_BASE_URL/LLM_API_KEY/LLM_MODEL no .env para apontar
+  # para um provedor compatível com OpenAI (ex.: Groq) e não subir este serviço.
+  ollama:
+    image: ollama/ollama:latest
+    container_name: normalizador-jusbrasil-ollama
+    ports:
+      - "11434:11434"
+    environment:
+      OLLAMA_KEEP_ALIVE: "-1"       # mantém o modelo carregado em VRAM entre chamadas
+      OLLAMA_FLASH_ATTENTION: "1"   # flash attention na GPU
+    volumes:
+      - ollama-data:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+  # Container de inicialização: baixa o modelo configurado e sai.
+  # Roda toda vez que `make up` é executado; se o modelo já está no volume, é instantâneo.
+  ollama-pull:
+    image: ollama/ollama:latest
+    container_name: normalizador-jusbrasil-ollama-pull
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+      LLM_MODEL: ${LLM_MODEL:-llama3.1:8b}
+    entrypoint: ["/bin/sh", "-c", "ollama pull $${LLM_MODEL} && echo 'ollama: $${LLM_MODEL} ready'"]
+    restart: "no"
+
+volumes:
+  pgdata:
+  localstack-data:
+  ollama-data:
+  redis-data:

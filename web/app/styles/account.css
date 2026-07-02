@@ -1,0 +1,494 @@
+/* ─── Account Page ───────────────────────────────────────────── */
+
+/* ── Grid ────────────────────────────────────────────────────── */
+.acct-grid {
+    display: grid;
+    grid-template-columns: 250px 1fr 210px;
+    gap: 14px;
+    align-items: start;
+    max-width: 1100px;
+}
+
+/* ── Tiles ───────────────────────────────────────────────────── */
+.acct-tile {
+    background: var(--box-bg);
+    border: 1px solid var(--box-border);
+    border-radius: 12px;
+    box-shadow: var(--box-shadow);
+    padding: 22px;
+}
+
+/* ── Tabs (inside the big bottom tile) ──────────────────────── */
+.acct-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border-default);
+    margin-bottom: 20px;
+}
+.acct-tab {
+    padding: 0 2px 12px;
+    margin-right: 24px;
+    margin-bottom: -1px;
+    font-family: Inter, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: color 150ms ease, border-color 150ms ease;
+    white-space: nowrap;
+}
+.acct-tab:hover {
+    color: var(--text-default);
+}
+.acct-tab[aria-selected="true"] {
+    color: var(--text-default);
+    font-weight: 600;
+    border-bottom-color: var(--primary-700);
+}
+.acct-tab:focus-visible {
+    outline: 2px solid var(--border-focus);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+.acct-tile-title {
+    font-family: Inter, Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-default);
+    letter-spacing: -0.02em;
+    margin: 0 0 16px;
+    line-height: 1.25;
+}
+
+/* ── Labels ──────────────────────────────────────────────────── */
+.acct-label {
+    display: block;
+    font-family: Inter, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    line-height: 1.4;
+}
+
+/* ── Fields ──────────────────────────────────────────────────── */
+.acct-field {
+    display: block;
+    height: 40px;
+    padding: 0 14px;
+    font-family: Inter, Arial, sans-serif;
+    font-size: 14px;
+    color: var(--text-default);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+.acct-field::placeholder {
+    color: var(--text-muted);
+}
+.acct-field:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px color-mix(in oklch, var(--border-focus) 18%, transparent);
+}
+.acct-field:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ── Avatar ──────────────────────────────────────────────────── */
+.acct-avatar-wrap {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--bg-primary);
+    flex-shrink: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.acct-avatar-wrap:focus-visible {
+    outline: 2px solid var(--border-focus);
+    outline-offset: 3px;
+}
+.acct-avatar-initials {
+    font-family: Inter, Arial, sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--text-inverted);
+    user-select: none;
+}
+.acct-avatar-icon {
+    color: var(--text-inverted);
+    opacity: 0.9;
+}
+.acct-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.acct-avatar-overlay {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 180ms ease;
+}
+.acct-avatar-overlay.visible {
+    opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+    .acct-avatar-overlay { transition: none; }
+}
+.acct-avatar-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: acct-spin 0.7s linear infinite;
+}
+@keyframes acct-spin {
+    to { transform: rotate(360deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .acct-avatar-spinner { animation: none; }
+}
+
+/* ── Password eye toggle ─────────────────────────────────────── */
+.acct-pw-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    transition: color 150ms ease;
+}
+.acct-pw-toggle:hover {
+    color: var(--text-default);
+}
+.acct-pw-toggle:focus-visible {
+    outline: 2px solid var(--border-focus);
+    outline-offset: 1px;
+}
+
+/* ── Buttons ─────────────────────────────────────────────────── */
+
+/* Primary — brand green, saturated */
+.acct-btn-save {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 16px;
+    height: 36px;
+    font-family: Inter, Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text-inverted);
+    background: var(--bg-primary);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 150ms ease, opacity 150ms ease;
+}
+.acct-btn-save:hover:not(:disabled) {
+    background: var(--primary-900);
+}
+.acct-btn-save:focus-visible {
+    outline: 2px solid var(--border-focus);
+    outline-offset: 2px;
+}
+.acct-btn-save:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* Secondary — surface + border */
+.acct-btn-ghost {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 14px;
+    height: 36px;
+    font-family: Inter, Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--text-default);
+    background: var(--box-bg);
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 150ms ease, border-color 150ms ease;
+}
+.acct-btn-ghost:hover:not(:disabled) {
+    background: var(--bg-tinted);
+}
+.acct-btn-ghost:focus-visible {
+    outline: 2px solid var(--border-focus);
+    outline-offset: 2px;
+}
+.acct-btn-ghost:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* Danger — vibrant red, clearly destructive */
+.acct-btn-danger {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 16px;
+    height: 36px;
+    font-family: Inter, Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: #ffffff;
+    background: #dc2626;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 150ms ease;
+}
+.acct-btn-danger:hover {
+    background: #b91c1c;
+}
+.acct-btn-danger:focus-visible {
+    outline: 2px solid #dc2626;
+    outline-offset: 2px;
+}
+
+/* Danger confirm */
+.acct-btn-danger-confirm {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
+    height: 36px;
+    font-family: Inter, Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #ffffff;
+    background: #dc2626;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 150ms ease, opacity 150ms ease;
+}
+.acct-btn-danger-confirm:hover:not(:disabled) {
+    background: #b91c1c;
+}
+.acct-btn-danger-confirm:focus-visible {
+    outline: 2px solid #dc2626;
+    outline-offset: 2px;
+}
+.acct-btn-danger-confirm:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* ── Inline feedback ─────────────────────────────────────────── */
+.acct-feedback-ok {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: Inter, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--primary-700);
+    animation: acct-fade-in 180ms ease both;
+}
+.acct-feedback-err {
+    display: block;
+    font-family: Inter, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: #dc2626;
+    animation: acct-fade-in 180ms ease both;
+}
+@keyframes acct-fade-in {
+    from { opacity: 0; transform: translateY(-3px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .acct-feedback-ok,
+    .acct-feedback-err { animation: none; }
+}
+
+/* ── Account v2 — theme-aware classes ────────────────────────── */
+
+/* Page background + brand tokens */
+.acct-page {
+    background: #E8FAF5;
+    --acct-brand: #006B5A;
+    --acct-brand-hover: #005447;
+}
+@media (prefers-color-scheme: dark) {
+    .acct-page {
+        background: #0A0A0A;
+        --acct-brand: #2EC98D;
+        --acct-brand-hover: #25B07B;
+    }
+}
+html[data-theme="dark"] .acct-page {
+    background: #0A0A0A;
+    --acct-brand: #2EC98D;
+    --acct-brand-hover: #25B07B;
+}
+html[data-theme="light"] .acct-page {
+    background: #E8FAF5;
+    --acct-brand: #006B5A;
+    --acct-brand-hover: #005447;
+}
+
+/* Card surface */
+.acct-v2-card {
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(15, 31, 44, 0.04), 0 4px 16px rgba(15, 31, 44, 0.04);
+}
+@media (prefers-color-scheme: dark) {
+    .acct-v2-card {
+        background: color-mix(in oklch, var(--bg-tinted) 92%, black);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    }
+}
+html[data-theme="dark"] .acct-v2-card {
+    background: color-mix(in oklch, var(--bg-tinted) 92%, black);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+html[data-theme="light"] .acct-v2-card {
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(15, 31, 44, 0.04), 0 4px 16px rgba(15, 31, 44, 0.04);
+}
+
+/* Semantic text colours */
+.acct-v2-text-primary   { color: #0F1F2C; }
+.acct-v2-text-secondary { color: #5B6B78; }
+.acct-v2-text-muted     { color: #8A98A4; }
+
+@media (prefers-color-scheme: dark) {
+    .acct-v2-text-primary   { color: #ffffff; }
+    .acct-v2-text-secondary { color: #9CA3AF; }
+    .acct-v2-text-muted     { color: #6B7280; }
+}
+html[data-theme="dark"] .acct-v2-text-primary   { color: #ffffff; }
+html[data-theme="dark"] .acct-v2-text-secondary { color: #9CA3AF; }
+html[data-theme="dark"] .acct-v2-text-muted     { color: #6B7280; }
+html[data-theme="light"] .acct-v2-text-primary  { color: #0F1F2C; }
+html[data-theme="light"] .acct-v2-text-secondary { color: #5B6B78; }
+html[data-theme="light"] .acct-v2-text-muted    { color: #8A98A4; }
+
+/* Subtle border (dividers, card separators) */
+.acct-v2-border-subtle { border-color: #E6EEF0; }
+@media (prefers-color-scheme: dark) {
+    .acct-v2-border-subtle { border-color: #1F1F1F; }
+}
+html[data-theme="dark"]  .acct-v2-border-subtle { border-color: #1F1F1F; }
+html[data-theme="light"] .acct-v2-border-subtle { border-color: #E6EEF0; }
+
+/* Input field */
+.acct-v2-input {
+    background: #ffffff;
+    border: 1px solid #E6EEF0;
+    color: #0F1F2C;
+}
+.acct-v2-input::placeholder { color: #8A98A4; }
+.acct-v2-input:focus {
+    outline: none;
+    border-color: var(--acct-brand);
+    box-shadow: 0 0 0 3px color-mix(in oklch, var(--acct-brand) 18%, transparent);
+}
+.acct-v2-input:disabled { opacity: 0.5; cursor: not-allowed; }
+
+@media (prefers-color-scheme: dark) {
+    .acct-v2-input { background: #141414; border-color: #262626; color: #ffffff; }
+    .acct-v2-input::placeholder { color: #6B7280; }
+    .acct-v2-input:focus { border-color: var(--acct-brand); box-shadow: 0 0 0 3px color-mix(in oklch, var(--acct-brand) 18%, transparent); }
+}
+html[data-theme="dark"] .acct-v2-input { background: #141414; border-color: #262626; color: #ffffff; }
+html[data-theme="dark"] .acct-v2-input::placeholder { color: #6B7280; }
+html[data-theme="dark"] .acct-v2-input:focus { border-color: var(--acct-brand); }
+html[data-theme="light"] .acct-v2-input { background: #ffffff; border-color: #E6EEF0; color: #0F1F2C; }
+html[data-theme="light"] .acct-v2-input::placeholder { color: #8A98A4; }
+
+/* Destructive action button */
+.acct-v2-btn-danger {
+    background: #dc2626;
+    transition: background 150ms ease, opacity 150ms ease;
+}
+.acct-v2-btn-danger:hover:not(:disabled) { background: #b91c1c; }
+.acct-v2-btn-danger:disabled { opacity: 0.4; cursor: not-allowed; }
+@media (prefers-color-scheme: dark) {
+    .acct-v2-btn-danger { background: #ef4444; }
+    .acct-v2-btn-danger:hover:not(:disabled) { background: #dc2626; }
+}
+html[data-theme="dark"] .acct-v2-btn-danger { background: #ef4444; }
+html[data-theme="dark"] .acct-v2-btn-danger:hover:not(:disabled) { background: #dc2626; }
+html[data-theme="light"] .acct-v2-btn-danger { background: #dc2626; }
+html[data-theme="light"] .acct-v2-btn-danger:hover:not(:disabled) { background: #b91c1c; }
+
+/* Eye-toggle icon in password fields */
+.acct-v2-icon { color: #8A98A4; transition: color 150ms ease; }
+.acct-v2-icon:hover { color: #0F1F2C; }
+@media (prefers-color-scheme: dark) {
+    .acct-v2-icon { color: #6B7280; }
+    .acct-v2-icon:hover { color: #ffffff; }
+}
+html[data-theme="dark"]  .acct-v2-icon { color: #6B7280; }
+html[data-theme="dark"]  .acct-v2-icon:hover { color: #ffffff; }
+html[data-theme="light"] .acct-v2-icon { color: #8A98A4; }
+html[data-theme="light"] .acct-v2-icon:hover { color: #0F1F2C; }
+
+/* Tab bar bottom-border */
+.acct-v2-tab-bar { border-color: #E6EEF0; }
+@media (prefers-color-scheme: dark) {
+    .acct-v2-tab-bar { border-color: #1F1F1F; }
+}
+html[data-theme="dark"]  .acct-v2-tab-bar { border-color: #1F1F1F; }
+html[data-theme="light"] .acct-v2-tab-bar { border-color: #E6EEF0; }
+
+/* Inactive tab text */
+.acct-v2-tab-inactive { color: #8A98A4; }
+.acct-v2-tab-inactive:hover { color: #0F1F2C; }
+@media (prefers-color-scheme: dark) {
+    .acct-v2-tab-inactive { color: #6B7280; }
+    .acct-v2-tab-inactive:hover { color: #ffffff; }
+}
+html[data-theme="dark"]  .acct-v2-tab-inactive { color: #6B7280; }
+html[data-theme="dark"]  .acct-v2-tab-inactive:hover { color: #ffffff; }
+html[data-theme="light"] .acct-v2-tab-inactive { color: #8A98A4; }
+html[data-theme="light"] .acct-v2-tab-inactive:hover { color: #0F1F2C; }
+

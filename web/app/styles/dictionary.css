@@ -1,0 +1,341 @@
+/* ─── Dictionary page ────────────────────────────────────────── */
+
+/* Card base */
+.dict-card {
+    background: var(--box-bg);
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+    padding: 20px 22px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    box-shadow:
+        0 2px 6px rgb(0 0 0 / 0.07),
+        0 1px 2px rgb(0 0 0 / 0.04);
+    transition:
+        border-color 150ms ease,
+        box-shadow 150ms ease,
+        background 150ms ease;
+    position: relative;
+}
+.dict-card:hover {
+    box-shadow:
+        0 5px 18px rgb(0 0 0 / 0.11),
+        0 2px 5px rgb(0 0 0 / 0.06);
+}
+.dict-card--categories:hover {
+    border-color: #006b5a;
+    background: oklch(42% 0.12 165 / 0.025);
+}
+.dict-card--context:hover {
+    border-color: #6b4cc7;
+    background: oklch(45% 0.17 295 / 0.025);
+}
+
+/* Card hover actions */
+.dict-card__actions {
+    opacity: 0;
+    transition: opacity 120ms ease;
+}
+.dict-card:hover .dict-card__actions {
+    opacity: 1;
+}
+
+/* Modal */
+.dict-modal-scrim {
+    position: fixed;
+    inset: 0;
+    background: oklch(0% 0 0 / 0.48);
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    animation: dict-scrim-in 180ms ease forwards;
+}
+@keyframes dict-scrim-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.dict-modal-panel {
+    background: var(--box-bg);
+    border: 1px solid var(--box-border);
+    border-radius: 12px;
+    width: 100%;
+    max-width: 560px;
+    max-height: calc(100vh - 48px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    box-shadow:
+        0 8px 32px rgb(0 0 0 / 0.14),
+        0 2px 8px rgb(0 0 0 / 0.08);
+    animation: dict-panel-in 200ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    zoom: 1.15;
+}
+@keyframes fadeSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@keyframes dict-panel-in {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Chip input (categories editor) */
+.dict-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    background: rgba(0, 107, 90, 0.09);
+    color: #006b5a;
+    border-radius: 99px;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+}
+.dict-chip__remove {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: #006b5a;
+    display: flex;
+    align-items: center;
+    opacity: 0.65;
+    transition: opacity 100ms ease;
+}
+.dict-chip__remove:hover {
+    opacity: 1;
+}
+
+/* Modal inline title input */
+.dict-modal-title-input::placeholder {
+    color: var(--border-strong);
+    font-weight: 400;
+}
+
+/* Aside stat rows */
+.dict-stat-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--border-default);
+}
+.dict-stat-row:last-child {
+    border-bottom: none;
+}
+
+/* Top-used item */
+.dict-topused-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--border-default);
+}
+.dict-topused-item:last-child {
+    border-bottom: none;
+}
+
+/* Aside cards */
+.dict-aside-card {
+    border-radius: 8px;
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+    .dict-card {
+        background: oklch(17% 0.008 165);
+        border-color: oklch(28% 0.012 165);
+        box-shadow: none;
+    }
+    .dict-card:hover {
+        box-shadow: 0 4px 16px rgb(0 0 0 / 0.4);
+    }
+    .dict-card--categories:hover {
+        border-color: oklch(52% 0.14 165);
+        background: oklch(42% 0.12 165 / 0.08);
+    }
+    .dict-card--context:hover {
+        border-color: oklch(52% 0.16 295);
+        background: oklch(45% 0.17 295 / 0.08);
+    }
+}
+html[data-theme="dark"] .dict-card {
+    background: oklch(17% 0.008 165);
+    border-color: oklch(28% 0.012 165);
+    box-shadow: none;
+}
+html[data-theme="dark"] .dict-card:hover {
+    box-shadow: 0 4px 16px rgb(0 0 0 / 0.4);
+}
+html[data-theme="dark"] .dict-card--categories:hover {
+    border-color: oklch(52% 0.14 165);
+    background: oklch(42% 0.12 165 / 0.08);
+}
+html[data-theme="dark"] .dict-card--context:hover {
+    border-color: oklch(52% 0.16 295);
+    background: oklch(45% 0.17 295 / 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+    .dict-aside-card {
+        background: oklch(17% 0.008 165) !important;
+        border-color: oklch(28% 0.012 165) !important;
+    }
+}
+html[data-theme="dark"] .dict-aside-card {
+    background: oklch(17% 0.008 165) !important;
+    border-color: oklch(28% 0.012 165) !important;
+}
+
+/* Light theme explicit reset — prevents @media dark from bleeding through when forced light */
+html[data-theme="light"] .dict-card {
+    background: var(--box-bg);
+    border-color: var(--border-strong);
+    box-shadow:
+        0 2px 6px rgb(0 0 0 / 0.07),
+        0 1px 2px rgb(0 0 0 / 0.04);
+}
+html[data-theme="light"] .dict-card:hover {
+    box-shadow:
+        0 5px 18px rgb(0 0 0 / 0.11),
+        0 2px 5px rgb(0 0 0 / 0.06);
+}
+html[data-theme="light"] .dict-card--categories:hover {
+    border-color: #006b5a;
+    background: oklch(42% 0.12 165 / 0.025);
+}
+html[data-theme="light"] .dict-card--context:hover {
+    border-color: #6b4cc7;
+    background: oklch(45% 0.17 295 / 0.025);
+}
+html[data-theme="light"] .dict-aside-card {
+    background: var(--box-bg) !important;
+    border-color: var(--border-strong) !important;
+}
+
+/* ─── Modal dark mode ─────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+    .dict-modal-panel {
+        background: oklch(22% 0.022 165);
+        border-color: oklch(36% 0.028 165);
+        box-shadow:
+            0 24px 64px rgb(0 0 0 / 0.7),
+            0 4px 16px rgb(0 0 0 / 0.4);
+    }
+    /* Sunken inputs — visibly recessed into the panel */
+    .dict-modal-panel input,
+    .dict-modal-panel textarea {
+        background: oklch(16% 0.014 165) !important;
+        border-color: oklch(32% 0.024 165) !important;
+        color: oklch(93% 0.008 165) !important;
+    }
+    .dict-modal-panel input::placeholder,
+    .dict-modal-panel textarea::placeholder {
+        color: oklch(48% 0.018 165);
+    }
+    /* Inline title input — higher specificity to beat .dict-modal-panel input */
+    .dict-modal-panel .dict-modal-title-input::placeholder {
+        color: oklch(38% 0.022 165);
+        font-weight: 400;
+    }
+    .dict-modal-panel .dict-modal-title-input {
+        background: none !important;
+        border-color: transparent !important;
+        color: oklch(93% 0.008 165) !important;
+    }
+    /* Chips */
+    .dict-chip {
+        background: oklch(42% 0.14 165 / 0.2);
+        border: 1px solid oklch(48% 0.14 165 / 0.4);
+        color: oklch(74% 0.14 165);
+    }
+    .dict-chip__remove {
+        color: oklch(74% 0.14 165);
+    }
+}
+
+html[data-theme="dark"] .dict-modal-panel {
+    background: oklch(22% 0.022 165);
+    border-color: oklch(36% 0.028 165);
+    box-shadow:
+        0 24px 64px rgb(0 0 0 / 0.7),
+        0 4px 16px rgb(0 0 0 / 0.4);
+}
+html[data-theme="dark"] .dict-modal-panel input,
+html[data-theme="dark"] .dict-modal-panel textarea {
+    background: oklch(16% 0.014 165) !important;
+    border-color: oklch(32% 0.024 165) !important;
+    color: oklch(93% 0.008 165) !important;
+}
+html[data-theme="dark"] .dict-modal-panel input::placeholder,
+html[data-theme="dark"] .dict-modal-panel textarea::placeholder {
+    color: oklch(48% 0.018 165);
+}
+html[data-theme="dark"] .dict-modal-panel .dict-modal-title-input::placeholder {
+    color: oklch(38% 0.022 165);
+    font-weight: 400;
+}
+html[data-theme="dark"] .dict-modal-panel .dict-modal-title-input {
+    background: none !important;
+    border-color: transparent !important;
+    color: oklch(93% 0.008 165) !important;
+}
+html[data-theme="light"] .dict-modal-panel .dict-modal-title-input {
+    background: none !important;
+    border-color: transparent !important;
+    color: var(--text-default) !important;
+}
+html[data-theme="dark"] .dict-chip {
+    background: oklch(42% 0.14 165 / 0.2);
+    border: 1px solid oklch(48% 0.14 165 / 0.4);
+    color: oklch(74% 0.14 165);
+}
+html[data-theme="dark"] .dict-chip__remove {
+    color: oklch(74% 0.14 165);
+}
+
+/* Light reset — prevent @media dark bleeding in when app is forced light */
+html[data-theme="light"] .dict-modal-panel {
+    background: var(--box-bg);
+    border-color: var(--box-border);
+    box-shadow:
+        0 8px 32px rgb(0 0 0 / 0.14),
+        0 2px 8px rgb(0 0 0 / 0.08);
+}
+html[data-theme="light"] .dict-modal-panel input,
+html[data-theme="light"] .dict-modal-panel textarea {
+    background: var(--bg-surface) !important;
+    border-color: var(--border-default) !important;
+    color: var(--text-default) !important;
+}
+html[data-theme="light"] .dict-chip {
+    background: rgba(0, 107, 90, 0.09);
+    border: none;
+    color: #006b5a;
+}
+html[data-theme="light"] .dict-chip__remove {
+    color: #006b5a;
+}

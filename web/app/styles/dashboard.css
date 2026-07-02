@@ -1,0 +1,86 @@
+/* ─── Theme transition ───────────────────────────────────────── */
+/* Temporarily applied by applyTheme() during the 500ms switch window.
+   Uses !important so it wins over per-component transitions, but only
+   fires on explicit toggle — never during normal interactions. */
+html.theme-transitioning,
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+    transition:
+        background-color 500ms ease,
+        background 500ms ease,
+        color 500ms ease,
+        border-color 500ms ease,
+        fill 500ms ease,
+        stroke 500ms ease,
+        box-shadow 500ms ease !important;
+    transition-delay: 0s !important;
+}
+@media (prefers-reduced-motion: reduce) {
+    html.theme-transitioning,
+    html.theme-transitioning *,
+    html.theme-transitioning *::before,
+    html.theme-transitioning *::after {
+        transition: none !important;
+    }
+}
+
+/* ─── Dashboard Shell ───────────────────────────────────────── */
+/* Wraps sidebar + main; inherits sidebar green so gap blends */
+.dashboard-shell {
+    background: #065f46;
+}
+@media (prefers-color-scheme: dark) {
+    .dashboard-shell { background: #c2f0c2; }
+}
+html[data-theme="dark"] .dashboard-shell { background: #c2f0c2; }
+html[data-theme="light"] .dashboard-shell { background: #065f46; }
+
+/* ─── Page Background ───────────────────────────────────────── */
+.dashboard-page-bg {
+    background: #f0fdf9;
+}
+@media (prefers-color-scheme: dark) {
+    .dashboard-page-bg { background: #0d1210; }
+}
+html[data-theme="dark"] .dashboard-page-bg { background: #0d1210; }
+html[data-theme="light"] .dashboard-page-bg { background: #f0fdf9; }
+
+/* ─── Scrollbar ─────────────────────────────────────────────── */
+.scroll-styled {
+    scrollbar-width: thin;
+    scrollbar-color: oklch(40% 0.1 165 / 0.22) transparent;
+}
+.scroll-styled::-webkit-scrollbar {
+    width: 5px;
+}
+.scroll-styled::-webkit-scrollbar-track {
+    background: transparent;
+}
+.scroll-styled::-webkit-scrollbar-thumb {
+    background: oklch(40% 0.1 165 / 0.22);
+    border-radius: 99px;
+}
+.scroll-styled::-webkit-scrollbar-thumb:hover {
+    background: oklch(40% 0.1 165 / 0.45);
+}
+@media (prefers-color-scheme: dark) {
+    .scroll-styled {
+        scrollbar-color: oklch(72% 0.08 165 / 0.25) transparent;
+    }
+    .scroll-styled::-webkit-scrollbar-thumb {
+        background: oklch(72% 0.08 165 / 0.25);
+    }
+    .scroll-styled::-webkit-scrollbar-thumb:hover {
+        background: oklch(72% 0.08 165 / 0.5);
+    }
+}
+html[data-theme="dark"] .scroll-styled {
+    scrollbar-color: oklch(72% 0.08 165 / 0.25) transparent;
+}
+html[data-theme="dark"] .scroll-styled::-webkit-scrollbar-thumb {
+    background: oklch(72% 0.08 165 / 0.25);
+}
+html[data-theme="dark"] .scroll-styled::-webkit-scrollbar-thumb:hover {
+    background: oklch(72% 0.08 165 / 0.5);
+}

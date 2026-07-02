@@ -1,0 +1,227 @@
+/* ─── Keyframes ─────────────────────────────────────────────── */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.35; }
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+@keyframes sb-panel-in {
+    from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.975);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes sb-projects-in {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ─── Animation classes ─────────────────────────────────────── */
+.skeleton-row {
+    height: 44px;
+    border-radius: 6px;
+    background: var(--bg-subtle);
+    animation: pulse 1.6s ease-in-out infinite;
+}
+
+.sb-projects-animate {
+    will-change: opacity;
+}
+.sb-projects-animate .sb-project-item,
+.sb-projects-animate .sb-fade-in {
+    animation: sb-projects-in 200ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.sb-projects-animate .sb-project-item:nth-child(1)  { animation-delay: 360ms; }
+.sb-projects-animate .sb-project-item:nth-child(2)  { animation-delay: 382ms; }
+.sb-projects-animate .sb-project-item:nth-child(3)  { animation-delay: 402ms; }
+.sb-projects-animate .sb-project-item:nth-child(4)  { animation-delay: 420ms; }
+.sb-projects-animate .sb-project-item:nth-child(5)  { animation-delay: 436ms; }
+.sb-projects-animate .sb-project-item:nth-child(6)  { animation-delay: 450ms; }
+.sb-projects-animate .sb-project-item:nth-child(7)  { animation-delay: 463ms; }
+.sb-projects-animate .sb-project-item:nth-child(8)  { animation-delay: 474ms; }
+.sb-projects-animate .sb-project-item:nth-child(9)  { animation-delay: 484ms; }
+.sb-projects-animate .sb-project-item:nth-child(10) { animation-delay: 493ms; }
+.sb-fade-in {
+    animation: sb-projects-in 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ─── Upload slot ───────────────────────────────────────────── */
+.upload-slot-card-inner {
+    border: 1.5px solid var(--primary-300, oklch(78% 0.08 165));
+    border-radius: 10px;
+    background: oklch(97% 0.02 165 / 0.6);
+}
+.upload-slot-icon-bg {
+    background: oklch(93% 0.04 165);
+}
+.upload-slot-footer {
+    border-top: 1px solid oklch(88% 0.04 165);
+}
+
+@media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .upload-slot-card-inner {
+        border-color: oklch(38% 0.08 165);
+        background: oklch(20% 0.018 165 / 0.6);
+    }
+    html:not([data-theme="light"]) .upload-slot-icon-bg {
+        background: oklch(24% 0.022 165);
+    }
+    html:not([data-theme="light"]) .upload-slot-footer {
+        border-top-color: oklch(27% 0.012 165);
+    }
+}
+html[data-theme="dark"] .upload-slot-card-inner {
+    border-color: oklch(38% 0.08 165);
+    background: oklch(20% 0.018 165 / 0.6);
+}
+html[data-theme="dark"] .upload-slot-icon-bg {
+    background: oklch(24% 0.022 165);
+}
+html[data-theme="dark"] .upload-slot-footer {
+    border-top-color: oklch(27% 0.012 165);
+}
+
+
+@keyframes slot-card-in {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+@keyframes slot-drop-in {
+    from {
+        opacity: 0;
+        transform: scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+.upload-slot-card {
+    animation: slot-card-in 300ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.upload-slot-drop {
+    animation: slot-drop-in 220ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ─── Save button dirty glow ────────────────────────────────── */
+@keyframes save-glow {
+    0%   { text-shadow: 0 0 0px oklch(55% 0.14 165 / 0); }
+    25%  { text-shadow: 0 0 6px oklch(55% 0.14 165 / 0.25); }
+    55%  { text-shadow: 0 0 16px oklch(55% 0.14 165 / 0.6); }
+    80%  { text-shadow: 0 0 8px oklch(55% 0.14 165 / 0.28); }
+    100% { text-shadow: 0 0 0px oklch(55% 0.14 165 / 0); }
+}
+.save-btn-dirty {
+    animation: save-glow 3.6s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+/* ─── Config button affordance glow ─────────────────────────── */
+@keyframes config-btn-glow {
+    0%   { box-shadow: 0 0 0px   oklch(55% 0.14 165 / 0);    color: var(--text-secondary, oklch(45% 0.02 165)); }
+    25%  { box-shadow: 0 0 5px   oklch(55% 0.14 165 / 0.35); color: oklch(55% 0.14 165); }
+    55%  { box-shadow: 0 0 12px  oklch(55% 0.14 165 / 0.6),
+                       0 0 4px   oklch(55% 0.14 165 / 0.3);  color: oklch(52% 0.16 165); }
+    80%  { box-shadow: 0 0 6px   oklch(55% 0.14 165 / 0.3);  color: oklch(55% 0.14 165); }
+    100% { box-shadow: 0 0 0px   oklch(55% 0.14 165 / 0);    color: var(--text-secondary, oklch(45% 0.02 165)); }
+}
+.config-btn-needs-setup {
+    animation: config-btn-glow 3.6s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+    .config-btn-needs-setup { animation: none; color: oklch(55% 0.14 165) !important; }
+}
+
+/* ─── Config drawer ─────────────────────────────────────────── */
+@keyframes sb-drawer-in {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+@keyframes sb-drawer-out {
+  from { transform: translateX(0);    opacity: 1; }
+  to   { transform: translateX(100%); opacity: 0; }
+}
+@keyframes sb-scrim-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes sb-scrim-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sb-drawer-panel { animation: none !important; transform: none !important; }
+  .sb-drawer-scrim { animation: none !important; }
+}
+
+/* ─── Indeterminate progress (IA roda em background, sem % granular) ── */
+@keyframes progress-indeterminate {
+  0%   { left: -40%; width: 40%; }
+  50%  { left: 25%;  width: 50%; }
+  100% { left: 100%; width: 40%; }
+}
+.progress-bar-indeterminate {
+  position: relative;
+  overflow: hidden;
+}
+.progress-bar-indeterminate::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--primary-700, oklch(38% 0.12 165));
+  animation: progress-indeterminate 1.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .progress-bar-indeterminate::after { animation: none; left: 0; width: 100%; opacity: 0.5; }
+}
+
+/* ─── Notification bell dot ─────────────────────────────────── */
+@keyframes bell-dot-ring {
+  0%   { transform: scale(1);   opacity: 0.55; }
+  100% { transform: scale(2.6); opacity: 0;    }
+}
+.bell-dot-ring {
+  animation: bell-dot-ring 2s cubic-bezier(0.2, 0, 0.55, 1) infinite;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .bell-dot-ring { animation: none; }
+}
+
+/* ─── Reduced motion ────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    .sb,
+    .sb * {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        transition-delay: 0ms !important;
+    }
+    .sb-modal-overlay {
+        transition: none !important;
+    }
+    .sb-modal-panel {
+        animation: none;
+    }
+}

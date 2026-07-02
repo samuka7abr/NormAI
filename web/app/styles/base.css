@@ -1,0 +1,652 @@
+/* ─── Base ──────────────────────────────────────────────────── */
+body {
+    background: #f0fdf9;
+    color: var(--text-default);
+    font-family: var(--font-dm-sans), "DM Sans", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+    body { background: #0d1210; }
+}
+html[data-theme="dark"] body { background: #0d1210; }
+html[data-theme="light"] body { background: #f0fdf9; }
+
+.auth-layout {
+    transition: background 500ms ease;
+}
+
+/* ─── Buttons ───────────────────────────────────────────────── */
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--primary-700);
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: background 200ms ease;
+}
+.btn-primary:hover {
+    background: #005a4c;
+}
+
+/* ─── btn-cta ───────────────────────────────────────────────── */
+@keyframes btn-glow {
+    0%, 100% {
+        box-shadow:
+            0 0 0 1px oklch(52% 0.16 165 / 0.5),
+            0 0 8px oklch(58% 0.18 165 / 0.2);
+    }
+    50% {
+        box-shadow:
+            0 0 0 1px oklch(70% 0.18 165 / 0.85),
+            0 0 18px oklch(65% 0.18 165 / 0.4);
+    }
+}
+@keyframes btn-glow-dark {
+    0%, 100% {
+        box-shadow:
+            0 0 0 1px oklch(78% 0.16 165 / 0.45),
+            0 0 8px oklch(72% 0.18 165 / 0.2);
+    }
+    50% {
+        box-shadow:
+            0 0 0 1px oklch(90% 0.12 165 / 0.8),
+            0 0 18px oklch(80% 0.16 165 / 0.4);
+    }
+}
+
+.btn-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--primary-700);
+    color: oklch(96% 0.015 165);
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    flex-shrink: 0;
+    animation: btn-glow 3s ease-in-out infinite;
+    transition: background 180ms ease, color 180ms ease;
+}
+.btn-cta:hover {
+    background: oklch(50% 0.13 165);
+}
+.btn-cta:active:not(:disabled) {
+    transform: scale(0.94);
+    transition: background 80ms ease, transform 80ms ease;
+}
+.btn-cta:focus-visible {
+    outline: 2px solid var(--border-focus);
+    outline-offset: 2px;
+}
+@media (prefers-color-scheme: dark) {
+    .btn-cta { background: var(--primary-300); color: var(--primary-950); animation-name: btn-glow-dark; }
+    .btn-cta:hover { background: oklch(72% 0.17 165); }
+}
+html[data-theme="dark"] .btn-cta { background: var(--primary-300); color: var(--primary-950); animation-name: btn-glow-dark; }
+html[data-theme="dark"] .btn-cta:hover { background: oklch(72% 0.17 165); }
+html[data-theme="light"] .btn-cta { background: var(--primary-700); color: oklch(96% 0.015 165); animation-name: btn-glow; }
+html[data-theme="light"] .btn-cta:hover { background: oklch(50% 0.13 165); }
+@media (prefers-reduced-motion: reduce) {
+    .btn-cta { animation: none; }
+}
+
+/* ─── Project cards (grid view) ────────────────────────────── */
+.project-card {
+    background: var(--box-bg);
+    border: 1px solid var(--box-border);
+    border-radius: 12px;
+    box-shadow: var(--box-shadow);
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition:
+        box-shadow 200ms ease,
+        border-color 200ms ease;
+    text-decoration: none;
+}
+.project-card:hover {
+    border-color: var(--border-strong);
+    box-shadow:
+        0 4px 12px rgb(0 0 0 / 0.1),
+        0 1px 3px rgb(0 0 0 / 0.06);
+}
+
+.new-project-card {
+    border-style: dashed;
+    box-shadow: none;
+    background: transparent;
+}
+.new-project-card:hover {
+    border-color: var(--primary-700);
+    box-shadow: none;
+    background: rgba(0, 107, 90, 0.03);
+}
+.new-project-card:hover span[aria-hidden] {
+    border-color: var(--primary-700);
+    color: var(--primary-700);
+}
+
+.card-description {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    -webkit-box-orient: vertical;
+}
+
+/* ─── Project list row ──────────────────────────────────────── */
+
+/* Wrapper: flex container so the process button sits outside the <a> */
+.project-row-item {
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    transition: background 150ms ease;
+    padding-left: 12px;
+}
+.project-row-item:hover {
+    background: var(--bg-tinted);
+}
+/* Suppress the link's own hover background inside the wrapper */
+.project-row-item .project-row:hover {
+    background: transparent;
+}
+/* Chevron fires from wrapper hover */
+.project-row-item:hover .project-row-chevron {
+    transform: translateX(3px);
+    color: var(--text-default) !important;
+}
+
+.project-row {
+    flex: 1;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: 1fr 24px 72px 96px 26px;
+    align-items: center;
+    padding: 18px 12px 18px 14px;
+    text-decoration: none;
+    color: var(--text-default);
+    gap: 8px;
+}
+/* Fallback hover for when row is used without .project-row-item */
+.project-row:hover {
+    background: var(--bg-tinted);
+    border-radius: 8px;
+}
+.project-row-chevron {
+    transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), color 150ms ease;
+}
+.project-row:hover .project-row-chevron {
+    transform: translateX(3px);
+    color: var(--text-default) !important;
+}
+@media (prefers-reduced-motion: reduce) {
+    .project-row-chevron { transition: color 150ms ease; }
+    .project-row:hover .project-row-chevron,
+    .project-row-item:hover .project-row-chevron { transform: none; }
+}
+.project-row:focus-visible {
+    outline: 2px solid var(--border-focus);
+    outline-offset: 0;
+    border-radius: 6px;
+}
+
+/* ─── Insights panel (aside de /projects) ───────────────────── */
+.insight-donut-seg {
+    transition: stroke-dasharray 200ms ease, stroke-dashoffset 200ms ease;
+}
+.insight-bar {
+    transition: height 200ms ease;
+}
+@media (prefers-reduced-motion: reduce) {
+    .insight-donut-seg,
+    .insight-bar { transition: none; }
+}
+
+/* ─── Process button (icon-only, sharp) ─────────────────────── */
+.process-btn {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    /* idle — visible, clearly interactive, low urgency */
+    color: oklch(50% 0.10 165);
+    background: oklch(95% 0.014 165);
+    border: 1px solid oklch(82% 0.06 165);
+    transition: border-color 150ms ease, background 150ms ease, color 150ms ease, transform 80ms ease;
+}
+.process-btn:hover {
+    color: var(--text-accent);
+    background: oklch(92% 0.020 165);
+    border-color: oklch(72% 0.10 165);
+}
+.process-btn:active {
+    transform: scale(0.91);
+    background: oklch(89% 0.025 165);
+}
+/* running — affirmed green, spinner communicates activity */
+.process-btn--running {
+    color: var(--text-accent);
+    background: var(--bg-tinted);
+    border-color: var(--border-active);
+}
+.process-btn--running:hover {
+    background: oklch(92% 0.020 165);
+    border-color: oklch(72% 0.10 165);
+}
+/* paused — amber, outside green palette, signals "stopped, needs attention" */
+.process-btn--paused {
+    color: oklch(52% 0.15 60);
+    background: oklch(97.5% 0.013 60);
+    border-color: oklch(78% 0.12 60);
+}
+.process-btn--paused:hover {
+    background: oklch(94% 0.022 60);
+    border-color: oklch(68% 0.14 60);
+}
+.process-btn--paused:active {
+    transform: scale(0.91);
+    background: oklch(91% 0.028 60);
+}
+/* done — low-key ghost, "already done, click to redo" */
+.process-btn--done {
+    color: oklch(58% 0.07 165);
+    background: transparent;
+    border-color: oklch(87% 0.04 165);
+}
+.process-btn--done:hover {
+    color: var(--text-accent);
+    background: oklch(95% 0.014 165);
+    border-color: oklch(76% 0.08 165);
+}
+.process-btn:focus-visible {
+    outline: 2px solid var(--border-focus);
+    outline-offset: 1px;
+}
+
+/* dark mode overrides */
+@media (prefers-color-scheme: dark) {
+    .process-btn {
+        color: oklch(68% 0.12 165);
+        background: oklch(26% 0.025 165);
+        border-color: oklch(38% 0.06 165);
+    }
+    .process-btn:hover {
+        color: var(--text-accent);
+        background: oklch(30% 0.032 165);
+        border-color: oklch(48% 0.09 165);
+    }
+    .process-btn--running {
+        color: var(--text-accent);
+        background: oklch(26% 0.025 165);
+        border-color: var(--border-active);
+    }
+    .process-btn--done {
+        color: oklch(52% 0.08 165);
+        background: transparent;
+        border-color: oklch(34% 0.04 165);
+    }
+    .process-btn--done:hover {
+        color: var(--text-accent);
+        background: oklch(26% 0.025 165);
+        border-color: oklch(42% 0.07 165);
+    }
+    .process-btn--paused {
+        color: oklch(76% 0.18 65);
+        background: oklch(23% 0.045 65);
+        border-color: oklch(40% 0.09 65);
+    }
+    .process-btn--paused:hover {
+        background: oklch(27% 0.055 65);
+        border-color: oklch(50% 0.11 65);
+    }
+}
+html[data-theme="dark"] .process-btn {
+    color: oklch(68% 0.12 165);
+    background: oklch(26% 0.025 165);
+    border-color: oklch(38% 0.06 165);
+}
+html[data-theme="dark"] .process-btn:hover {
+    color: var(--text-accent);
+    background: oklch(30% 0.032 165);
+    border-color: oklch(48% 0.09 165);
+}
+html[data-theme="dark"] .process-btn--running {
+    color: var(--text-accent);
+    background: oklch(26% 0.025 165);
+    border-color: var(--border-active);
+}
+html[data-theme="dark"] .process-btn--done {
+    color: oklch(52% 0.08 165);
+    background: transparent;
+    border-color: oklch(34% 0.04 165);
+}
+html[data-theme="dark"] .process-btn--done:hover {
+    color: var(--text-accent);
+    background: oklch(26% 0.025 165);
+    border-color: oklch(42% 0.07 165);
+}
+html[data-theme="dark"] .process-btn--paused {
+    color: oklch(76% 0.18 65);
+    background: oklch(23% 0.045 65);
+    border-color: oklch(40% 0.09 65);
+}
+html[data-theme="dark"] .process-btn--paused:hover {
+    background: oklch(27% 0.055 65);
+    border-color: oklch(50% 0.11 65);
+}
+/* light theme explicit reset — overrides @media dark when data-theme="light" */
+html[data-theme="light"] .process-btn {
+    color: oklch(50% 0.10 165);
+    background: oklch(95% 0.014 165);
+    border-color: oklch(82% 0.06 165);
+}
+html[data-theme="light"] .process-btn:hover {
+    color: var(--text-accent);
+    background: oklch(92% 0.020 165);
+    border-color: oklch(72% 0.10 165);
+}
+html[data-theme="light"] .process-btn--running {
+    color: var(--text-accent);
+    background: var(--bg-tinted);
+    border-color: var(--border-active);
+}
+html[data-theme="light"] .process-btn--running:hover {
+    background: oklch(92% 0.020 165);
+    border-color: oklch(72% 0.10 165);
+}
+html[data-theme="light"] .process-btn--done {
+    color: oklch(58% 0.07 165);
+    background: transparent;
+    border-color: oklch(87% 0.04 165);
+}
+html[data-theme="light"] .process-btn--done:hover {
+    color: var(--text-accent);
+    background: oklch(95% 0.014 165);
+    border-color: oklch(76% 0.08 165);
+}
+html[data-theme="light"] .process-btn--paused {
+    color: oklch(52% 0.15 60);
+    background: oklch(97.5% 0.013 60);
+    border-color: oklch(78% 0.12 60);
+}
+html[data-theme="light"] .process-btn--paused:hover {
+    background: oklch(94% 0.022 60);
+    border-color: oklch(68% 0.14 60);
+}
+
+/* ─── Status dot pulse (error / new) ────────────────────────── */
+.status-dot {
+    position: relative;
+    flex-shrink: 0;
+}
+.status-dot--error::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: #ef4444;
+    animation: status-radar 2.6s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+@keyframes status-radar {
+    0%   { transform: scale(1);   opacity: 0.55; }
+    70%  { transform: scale(2.8); opacity: 0;    }
+    100% { transform: scale(2.8); opacity: 0;    }
+}
+.status-dot--new::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: #86efac;
+    animation: status-breathe 1.7s ease-in-out infinite;
+}
+@keyframes status-breathe {
+    0%   { opacity: 0;    }
+    50%  { opacity: 0.55; }
+    100% { opacity: 0;    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .status-dot--error::before,
+    .status-dot--new::before { animation: none; }
+}
+
+/* ─── Task card tokens ──────────────────────────────────────── */
+:root {
+    --task-card-bg:              oklch(95.5% 0.018 165);
+    --task-card-bg-hover:        oklch(94%   0.022 165);
+    --task-card-border:          oklch(84%   0.045 165);
+    --task-card-border-hover:    oklch(76%   0.07  165);
+    /* checked state — light mode */
+    --task-card-checked-bg:      oklch(40%   0.13  165);
+    --task-card-checked-bg-hover:oklch(37%   0.12  165);
+    --task-card-checked-border:  oklch(40%   0.13  165);
+    --task-card-checked-box-bg:  oklch(80%   0.12  165 / 0.28);
+    --task-card-checked-box-bd:  oklch(78%   0.09  165);
+    --task-card-checked-text:    oklch(97%   0.01  165);
+    --task-card-checked-check:   oklch(97%   0.01  165);
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --task-card-bg:              oklch(18% 0.03 165);
+        --task-card-bg-hover:        oklch(22% 0.04 165);
+        --task-card-border:          oklch(30% 0.06 165);
+        --task-card-border-hover:    oklch(38% 0.08 165);
+        /* checked state — dark mode */
+        --task-card-checked-bg:      oklch(34% 0.11  165);
+        --task-card-checked-bg-hover:oklch(38% 0.12  165);
+        --task-card-checked-border:  oklch(52% 0.13  165);
+        --task-card-checked-box-bg:  oklch(52% 0.13  165 / 0.22);
+        --task-card-checked-box-bd:  oklch(62% 0.11  165);
+        --task-card-checked-text:    oklch(92% 0.035 165);
+        --task-card-checked-check:   oklch(92% 0.035 165);
+    }
+}
+html[data-theme="dark"] {
+    --task-card-bg:              oklch(18% 0.03 165);
+    --task-card-bg-hover:        oklch(22% 0.04 165);
+    --task-card-border:          oklch(30% 0.06 165);
+    --task-card-border-hover:    oklch(38% 0.08 165);
+    --task-card-checked-bg:      oklch(34% 0.11  165);
+    --task-card-checked-bg-hover:oklch(38% 0.12  165);
+    --task-card-checked-border:  oklch(52% 0.13  165);
+    --task-card-checked-box-bg:  oklch(52% 0.13  165 / 0.22);
+    --task-card-checked-box-bd:  oklch(62% 0.11  165);
+    --task-card-checked-text:    oklch(92% 0.035 165);
+    --task-card-checked-check:   oklch(92% 0.035 165);
+}
+html[data-theme="light"] {
+    --task-card-bg:              oklch(95.5% 0.018 165);
+    --task-card-bg-hover:        oklch(94%   0.022 165);
+    --task-card-border:          oklch(84%   0.045 165);
+    --task-card-border-hover:    oklch(76%   0.07  165);
+    --task-card-checked-bg:      oklch(40%   0.13  165);
+    --task-card-checked-bg-hover:oklch(37%   0.12  165);
+    --task-card-checked-border:  oklch(40%   0.13  165);
+    --task-card-checked-box-bg:  oklch(80%   0.12  165 / 0.28);
+    --task-card-checked-box-bd:  oklch(78%   0.09  165);
+    --task-card-checked-text:    oklch(97%   0.01  165);
+    --task-card-checked-check:   oklch(97%   0.01  165);
+}
+
+/* ─── New project borderless fields ────────────────────────── */
+.new-project-field::placeholder {
+    color: var(--text-muted);
+    opacity: 1;
+}
+
+/* ─── ContentEditable placeholder ──────────────────────────── */
+.new-project-title[data-placeholder]:empty::before {
+    content: attr(data-placeholder);
+    color: var(--text-muted);
+    pointer-events: none;
+}
+
+/* ─── projects/new — motion ─────────────────────────────────── */
+
+/* Check mark draw-in (fires on mount) */
+@keyframes check-pop {
+    0%   { opacity: 0; transform: scale(0.3) rotate(-15deg); }
+    70%  { opacity: 1; transform: scale(1.25) rotate(5deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+.check-icon {
+    animation: check-pop 170ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Tag pill pop-in (fires on mount) */
+@keyframes tag-pop {
+    from { opacity: 0; transform: scale(0.7); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+/* Toast fade-out — opacity only, no translate, 1.5s slow dissolve */
+@keyframes toast-out {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+}
+
+/* Process button icon animations */
+@keyframes icon-enter {
+    from { opacity: 0; transform: scale(0.6); }
+    to   { opacity: 1; transform: scale(1);   }
+}
+@keyframes icon-leave {
+    from { opacity: 1; transform: scale(1) rotate(0deg);    }
+    to   { opacity: 0; transform: scale(0.5) rotate(12deg); }
+}
+@keyframes icon-breathe {
+    0%, 100% { transform: scale(1);    }
+    50%       { transform: scale(1.18); }
+}
+
+.process-btn-icon {
+    display: flex;
+    animation: icon-enter 200ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+/* Check confirmation icon — pops in with overshoot then settles */
+.process-btn-icon--check {
+    display: flex;
+    animation: check-pop 240ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.process-btn-icon--leaving {
+    display: flex;
+    animation: icon-leave 180ms cubic-bezier(0.4, 0, 1, 1) both;
+    pointer-events: none;
+}
+.process-btn-icon--paused {
+    animation:
+        icon-enter  200ms cubic-bezier(0.16, 1, 0.3, 1) both,
+        icon-breathe 2.6s ease-in-out 220ms infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+    .process-btn-icon,
+    .process-btn-icon--check,
+    .process-btn-icon--leaving,
+    .process-btn-icon--paused {
+        animation: none;
+    }
+}
+
+/* Hover nudge on the Play icon (only when not running or paused) */
+.process-btn:not(.process-btn--running):not(.process-btn--paused):hover .process-btn-icon {
+    transform: translateX(2px) scale(1.08);
+    transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .process-btn-icon,
+    .process-btn-icon--paused {
+        animation: none;
+    }
+    .process-btn:not(.process-btn--running):not(.process-btn--paused):hover .process-btn-icon {
+        transform: none;
+    }
+}
+.tag-pill {
+    animation: tag-pop 170ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Dict tab content crossfade (fires on re-mount via key) */
+@keyframes tab-fade-slide {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.dict-tab-content {
+    animation: tab-fade-slide 180ms cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Press / active scale — applied via className to any pressable element
+   Requires the element's inline transition to include transform, or no inline transition set */
+.pressable:active { transform: scale(0.96) !important; }
+
+/* Tag × remove button */
+.btn-tag-remove {
+    transition: opacity 120ms ease, transform 80ms ease;
+}
+.btn-tag-remove:hover  { opacity: 1 !important; }
+.btn-tag-remove:active { transform: scale(0.78) !important; }
+
+/* Secondary action buttons (Adicionar, +, CSV import) */
+.btn-secondary-action {
+    transition: border-color 150ms ease, color 150ms ease, background 150ms ease, transform 80ms ease;
+}
+.btn-secondary-action:hover  { border-color: var(--border-strong) !important; color: var(--text-default) !important; }
+.btn-secondary-action:active { transform: scale(0.95) !important; }
+
+/* Dict apply / unapply button */
+.dict-apply-btn {
+    transition: background 120ms ease, border-color 120ms ease, color 120ms ease, transform 80ms ease;
+}
+.dict-apply-btn:hover  { opacity: 0.8; }
+.dict-apply-btn:active { transform: scale(0.86) !important; }
+
+/* Nav links (breadcrumb, Cancelar) */
+.nav-link { transition: color 150ms ease; }
+.nav-link:hover { color: var(--text-secondary) !important; }
+
+/* Norm checkbox item press */
+.norm-checkbox-item:active { transform: scale(0.975) !important; }
+
+/* prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+    .check-icon,
+    .tag-pill,
+    .dict-tab-content { animation: none !important; opacity: 1 !important; transform: none !important; }
+
+    .pressable:active,
+    .btn-tag-remove:active,
+    .btn-secondary-action:active,
+    .dict-apply-btn:active,
+    .norm-checkbox-item:active { transform: none !important; }
+}
+
+
+/* ─── Accessibility ─────────────────────────────────────────── */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
